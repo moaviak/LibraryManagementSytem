@@ -5,13 +5,184 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+        ArrayList<Book> books = new ArrayList<>();
 	    ArrayList<Admin> admins = new ArrayList<>();
+
         System.out.println("-------------------------------------");
         System.out.println("Welcome To Library Management System");
         System.out.println("-------------------------------------");
 
         System.out.println("\nInitialize Admin Account");
+        signUpAdmin(admins);
+        System.out.println("\nAdmin Account Successfully Created");
 
+        boolean exit = false;
+        do {
+            System.out.println("\n----------Main Menu----------");
+
+            System.out.print("1. Admin Portal\n" +
+                    "2. Student Portal\n" +
+                    "0. To Exit\n" +
+                    "Enter: ");
+            int ch = Integer.parseInt(sc.nextLine());
+
+            switch (ch) {
+                case 1:
+                    ArrayList<Supplier> suppliers = new ArrayList<>();
+                    System.out.println("\n----------Admin Portal----------");
+                    System.out.print("1. To Login\n" +
+                            "2. To Sign-up\n" +
+                            "Enter: ");
+                    ch = Integer.parseInt(sc.nextLine());
+
+                    boolean loged = false;
+                    Admin logedAdmin = null;
+
+                    switch (ch) {
+                        case 1:
+                            do {
+                                System.out.println("\n----------Admin LogIn----------");
+                                System.out.print("Enter Email: ");
+                                String email = sc.nextLine();
+                                System.out.print("Enter Password: ");
+                                String password = sc.nextLine();
+                                for (Admin admin : admins) {
+                                    if (admin.verifyLogin(email, password)) {
+                                        logedAdmin = admin;
+                                        loged = true;
+                                    }
+                                }
+                                if (!loged) {
+                                    System.out.println("Invalid Email or Password!");
+                                    System.out.println("Press 1 to Try Again or Press 0 to Exit");
+                                    if (Integer.parseInt(sc.nextLine()) != 1)
+                                        break;
+                                } else
+                                    break;
+                            } while (true);
+                        case 2:
+                            if (!loged) {
+                                System.out.println("\n----------Admin SignUp----------");
+                                signUpAdmin(admins);
+                                logedAdmin = admins.get(admins.size()-1);
+                                loged = true;
+                                System.out.println("\nAdmin Successfully Created");
+                            }
+                            if (loged) {
+                                do {
+                                    System.out.println("\n----------Admin Portal----------");
+                                    System.out.println("1. Book Menu\n" +
+                                            "2. Supplier Menu\n" +
+                                            "3. Expenses Menu\n" +
+                                            "4. Your Profile\n" +
+                                            "0. To Log-out");
+                                    System.out.print("Enter: ");
+
+                                    ch = Integer.parseInt(sc.nextLine());
+                                    if (ch == 0) break;
+
+                                    switch (ch) {
+                                        case 1:
+                                            do {
+                                                System.out.println("\n----------Book Menu----------");
+                                                System.out.print("1. Add a Book\n" +
+                                                        "2. Search Book\n" +
+                                                        "3. View All Books\n" +
+                                                        "0. To Exit\n" +
+                                                        "Enter: ");
+                                                ch = Integer.parseInt(sc.nextLine());
+                                                if (ch == 0) break;
+
+                                                switch (ch) {
+                                                    case 1:
+                                                        if (suppliers.isEmpty()) {
+                                                            System.out.println("First Add Supplier");
+                                                            break;
+                                                        }
+                                                        System.out.print("\nEnter Book Id: ");
+                                                        int bookId = Integer.parseInt(sc.nextLine());
+                                                        System.out.print("Enter Book Name: ");
+                                                        String bookName = sc.nextLine();
+                                                        System.out.print("Enter Book Author: ");
+                                                        String bookAuthor = sc.nextLine();
+                                                        do {
+                                                            System.out.print("Enter Book Supplier Id: ");
+                                                            String supplierId = sc.nextLine();
+                                                            Supplier supplier = findSupplier(suppliers, supplierId);
+
+                                                            if (supplier != null) {
+                                                                books.add(new Book(bookId, bookName, bookAuthor, supplier));
+                                                                System.out.println("Book Successfully Added!");
+                                                                break;
+                                                            } else {
+                                                                System.out.println("Invalid Supplier Id");
+                                                                System.out.println("\nEnter 1 to Try Again or 0 to Exit");
+                                                                if (Integer.parseInt(sc.nextLine()) != 1)
+                                                                    break;
+                                                            }
+                                                        } while (true);
+                                                        break;
+                                                    case 2:
+                                                        if (books.isEmpty()) {
+                                                            System.out.println("\nNo Book Added Yet!");
+                                                            break;
+                                                        }
+                                                        System.out.print("\nEnter Book Id or Name to Search: ");
+                                                        String bookSearch = sc.nextLine();
+                                                        Book book = logedAdmin.searchBook(books, bookSearch);
+                                                        if (book != null) {
+                                                            System.out.println("\n" + book);
+                                                            if (book.isIssued()) {
+                                                                System.out.println("Issued By: " + book.getIssuedBy());
+                                                            }
+                                                        } else {
+                                                            System.out.println("\nNo Book Found");
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        if (books.isEmpty()) {
+                                                            System.out.println("\nNo Book Added Yet!");
+                                                            break;
+                                                        }
+                                                        logedAdmin.viewBooks(books);
+                                                        break;
+                                                }
+                                            } while (true);
+                                            break;
+
+                                        case 2:
+                                            // Supplier Menu TBW
+                                        case 3:
+                                            // Expenses Menu TBW
+                                        case 4:
+                                            // Admin Profile TBW
+                                    }
+                                } while (true);
+                            }
+                    }
+                    break;
+                case 2:
+                    // Student Portal TBW
+                case 0:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("\nInvalid Choice");
+            }
+
+        } while (!exit);
+    }
+
+    private static Supplier findSupplier(ArrayList<Supplier> suppliers, String supplierId) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getIdNo().equals(supplierId)) {
+                return supplier;
+            }
+        }
+        return null;
+    }
+
+    private static void signUpAdmin(ArrayList<Admin> admins) {
         System.out.print("Enter Name: ");
         String adminName = sc.nextLine();
         System.out.print("Enter Age: ");
@@ -21,7 +192,5 @@ public class Main {
         System.out.print("Enter Password: ");
         String adminPassword = sc.nextLine();
         admins.add(new Admin(adminName, adminAge, adminEmail, adminPassword));
-
-        System.out.println("\nAdmin Account Successfully Created");
     }
 }
