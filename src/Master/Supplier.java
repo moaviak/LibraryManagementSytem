@@ -7,7 +7,7 @@ public class Supplier extends Person{
     private String company;
     private String contact;
 
-    public Supplier(String name, int age, String company, String contact, String idNo) {
+    public Supplier(String idNo, String name, int age, String company, String contact) {
         super(name, age);
         setCompany(company);
         setContact(contact);

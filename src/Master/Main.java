@@ -129,7 +129,7 @@ public class Main {
                                                         }
                                                         System.out.print("\nEnter Book Id or Name to Search: ");
                                                         String bookSearch = sc.nextLine();
-                                                        Book book = logedAdmin.searchBook(books, bookSearch);
+                                                        Book book = findBook(books, bookSearch);
                                                         if (book != null) {
                                                             System.out.println("\n" + book);
                                                             if (book.isIssued()) {
@@ -151,7 +151,69 @@ public class Main {
                                             break;
 
                                         case 2:
-                                            // Supplier Menu TBW
+                                            do {
+                                                System.out.println("\n----------Supplier Menu----------");
+                                                System.out.print("1. Add new Supplier\n" +
+                                                        "2. View Suppliers\n" +
+                                                        "3. Search Supplier\n" +
+                                                        "0. Exit\n" +
+                                                        "Enter: ");
+                                                ch = Integer.parseInt(sc.nextLine());
+
+                                                if (ch == 0) break;
+
+                                                switch (ch) {
+                                                    case 1:
+                                                        System.out.print("\nEnter Supplier Id: ");
+                                                        String supplierId = sc.nextLine();
+                                                        System.out.print("Enter Supplier Name: ");
+                                                        String supplierName = sc.nextLine();
+                                                        System.out.print("Enter Supplier Age: ");
+                                                        int supplierAge = Integer.parseInt(sc.nextLine());
+                                                        System.out.print("Enter Supplier Company Name: ");
+                                                        String supplierCompany = sc.nextLine();
+                                                        System.out.print("Enter Supplier Contact Number: ");
+                                                        String supplierContact = sc.nextLine();
+
+                                                        suppliers.add(new Supplier(supplierId, supplierName, supplierAge, supplierCompany, supplierContact));
+                                                        System.out.println("\nSupplier Successfully Added");
+                                                        break;
+                                                    case 2:
+                                                        if (suppliers.isEmpty()) {
+                                                            System.out.println("\nNo Supplier Added Yet!");
+                                                            break;
+                                                        }
+                                                        System.out.println();
+                                                        int i = 1;
+                                                        for (Supplier supplier : suppliers) {
+                                                            System.out.println(i + ". " + supplier);
+                                                            i++;
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        if (suppliers.isEmpty()) {
+                                                            System.out.println("\nNo Supplier Added Yet!");
+                                                            break;
+                                                        }
+                                                        System.out.print("\nEnter Supplier Id to Search: ");
+                                                        supplierId = sc.nextLine();
+                                                        Supplier supplier = findSupplier(suppliers, supplierId);
+                                                        if (supplier != null) {
+                                                            System.out.println("Supplier Id: " + supplier.getIdNo() +
+                                                                    "\nSupplier Name: " + supplier.getName() +
+                                                                    "\nSupplier Age: " + supplier.getAge() +
+                                                                    "\nSupplier Company: " + supplier.getCompany() +
+                                                                    "\nSupplier Contact: " + supplier.getContact());
+                                                            System.out.println("\n----------Books Supplied----------");
+                                                            supplier.viewBooks(books);
+                                                        } else {
+                                                            System.out.println("\nNo Supplier Found!");
+                                                        }
+                                                        break;
+                                                    default:
+                                                        System.out.println("\nInvalid Choice");
+                                                }
+                                            } while (true);
                                         case 3:
                                             // Expenses Menu TBW
                                         case 4:
@@ -171,6 +233,15 @@ public class Main {
             }
 
         } while (!exit);
+    }
+
+    private static Book findBook(ArrayList<Book> books, String text) {
+        for (Book book : books) {
+            if (String.valueOf(book.getId()).equals(text) || book.getName().equalsIgnoreCase(text)) {
+                return book;
+            }
+        }
+        return null;
     }
 
     private static Supplier findSupplier(ArrayList<Supplier> suppliers, String supplierId) {

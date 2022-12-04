@@ -46,12 +46,4 @@ public class Admin extends Person implements Login{
         }
     }
 
-    public Book searchBook(ArrayList<Book> books, String text) {
-        for (Book book : books) {
-            if (String.valueOf(book.getId()).equals(text) || book.getName().equalsIgnoreCase(text)) {
-                return book;
-            }
-        }
-        return null;
-    }
 }
