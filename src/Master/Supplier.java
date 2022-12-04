@@ -52,6 +52,6 @@ public class Supplier extends Person{
 
     @Override
     public String toString() {
-        return getIdNo() + " " + getName() + " " + getCompany();
+        return getIdNo() + ", " + getName() + ", " + getCompany();
     }
 }

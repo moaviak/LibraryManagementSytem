@@ -29,6 +29,8 @@ public class Main {
             switch (ch) {
                 case 1:
                     ArrayList<Supplier> suppliers = new ArrayList<>();
+                    ArrayList<Expenses> expenses = new ArrayList<>();
+
                     System.out.println("\n----------Admin Portal----------");
                     System.out.print("1. To Login\n" +
                             "2. To Sign-up\n" +
@@ -175,7 +177,8 @@ public class Main {
                                                         System.out.print("Enter Supplier Contact Number: ");
                                                         String supplierContact = sc.nextLine();
 
-                                                        suppliers.add(new Supplier(supplierId, supplierName, supplierAge, supplierCompany, supplierContact));
+                                                        suppliers.add(new Supplier(supplierId, supplierName, supplierAge,
+                                                                supplierCompany, supplierContact));
                                                         System.out.println("\nSupplier Successfully Added");
                                                         break;
                                                     case 2:
@@ -214,8 +217,63 @@ public class Main {
                                                         System.out.println("\nInvalid Choice");
                                                 }
                                             } while (true);
+                                            break;
                                         case 3:
-                                            // Expenses Menu TBW
+                                            do {
+                                                System.out.println("\n----------Expenses Menu----------");
+                                                System.out.print("1. Add new Expense Record\n" +
+                                                        "2. View Previous Expenses\n" +
+                                                        "3. Search for Particular Month Expenses\n" +
+                                                        "0. Exit\n" +
+                                                        "Enter: ");
+                                                ch = Integer.parseInt(sc.nextLine());
+
+                                                if (ch == 0) break;
+
+                                                switch (ch) {
+                                                    case 1:
+                                                        System.out.print("\nEnter Month: ");
+                                                        String month = sc.nextLine();
+                                                        System.out.print("Enter Utility Bills: ");
+                                                        int utilityBills = Integer.parseInt(sc.nextLine());
+                                                        System.out.print("Enter Books Cost: ");
+                                                        int booksCost = Integer.parseInt(sc.nextLine());
+                                                        System.out.print("Enter Admin Salary: ");
+                                                        int adminSalary = Integer.parseInt(sc.nextLine());
+
+                                                        expenses.add(new Expenses(month, utilityBills, booksCost, adminSalary));
+                                                        System.out.println("\nExpenses Successfully Added");
+                                                        break;
+                                                    case 2:
+                                                        if (expenses.isEmpty()) {
+                                                            System.out.println("\nNo Record Added Yet!");
+                                                            break;
+                                                        }
+                                                        System.out.println();
+                                                        for(Expenses expense : expenses) {
+                                                            System.out.println(expense);
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        if (expenses.isEmpty()) {
+                                                            System.out.println("\nNo Record Added Yet!");
+                                                            break;
+                                                        }
+                                                        System.out.print("\nEnter Month Name: ");
+                                                        month = sc.nextLine();
+                                                        Expenses expenses1 = findExpenses(expenses, month);
+                                                        if (expenses1 != null) {
+                                                            System.out.println();
+                                                            expenses1.generateTranscript();
+                                                        } else {
+                                                            System.out.println("\nNo Record Found!");
+                                                        }
+                                                        break;
+                                                    default:
+                                                        System.out.println("\nInvalid Choice!");
+                                                }
+                                            } while (true);
+                                            break;
                                         case 4:
                                             // Admin Profile TBW
                                     }
@@ -233,6 +291,15 @@ public class Main {
             }
 
         } while (!exit);
+    }
+
+    private static Expenses findExpenses(ArrayList<Expenses> expenses, String month) {
+        for(Expenses expense: expenses) {
+            if (expense.getMonth().equalsIgnoreCase(month)) {
+                return expense;
+            }
+        }
+        return null;
     }
 
     private static Book findBook(ArrayList<Book> books, String text) {

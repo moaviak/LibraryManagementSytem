@@ -67,6 +67,6 @@ public class Book {
     public String toString() {
         return "Book Id: " + id + "\n" +
                 "Book Name: " + name + "\n" +
-                "Book Author: " + author + "\n";
+                "Book Author: " + author;
     }
 }
