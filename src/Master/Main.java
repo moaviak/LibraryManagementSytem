@@ -275,7 +275,64 @@ public class Main {
                                             } while (true);
                                             break;
                                         case 4:
-                                            // Admin Profile TBW
+                                            do {
+                                                System.out.println("\n----------Your Profile----------");
+                                                System.out.print("1. Change Your Profile\n" +
+                                                        "2. View Your Profile\n" +
+                                                        "0. Exit\n" +
+                                                        "Enter: ");
+                                                ch = Integer.parseInt(sc.nextLine());
+
+                                                if (ch == 0) break;
+
+                                                switch (ch) {
+                                                    case 1:
+                                                        do {
+                                                            System.out.print("\n1. Change Name\n" +
+                                                                    "2. Change Age\n" +
+                                                                    "3. Change Email\n" +
+                                                                    "4. Change Password\n" +
+                                                                    "0. Exit\n" +
+                                                                    "Enter: ");
+                                                            ch = Integer.parseInt(sc.nextLine());
+
+                                                            if (ch == 0) break;
+
+                                                            switch (ch) {
+                                                                case 1:
+                                                                    System.out.print("\nEnter New Name: ");
+                                                                    String name = sc.nextLine();
+                                                                    logedAdmin.setName(name);
+                                                                    break;
+                                                                case 2:
+                                                                    System.out.print("\nEnter New Age: ");
+                                                                    int age = Integer.parseInt(sc.nextLine());
+                                                                    logedAdmin.setAge(age);
+                                                                    break;
+                                                                case 3:
+                                                                    System.out.print("\nEnter New Email: ");
+                                                                    String email = sc.nextLine();
+                                                                    logedAdmin.setEmail(email);
+                                                                    break;
+                                                                case 4:
+                                                                    System.out.print("\nEnter New Password: ");
+                                                                    String password = sc.nextLine();
+                                                                    logedAdmin.setPassword(password);
+                                                                    break;
+                                                                default:
+                                                                    System.out.println("\nInvalid Choice");
+                                                            }
+                                                        } while (true);
+                                                        break;
+                                                    case 2:
+                                                        System.out.println(logedAdmin);
+                                                        break;
+                                                    default:
+                                                        System.out.println("\nInvlaid Choice");
+                                                        break;
+                                                }
+                                            } while (true);
+                                            break;
                                     }
                                 } while (true);
                             }

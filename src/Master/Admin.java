@@ -46,4 +46,10 @@ public class Admin extends Person implements Login{
         }
     }
 
+    @Override
+    public String toString() {
+        return "Name: " + getName() +
+                "\nAge: " + getAge() +
+                "\nEmail: " + getEmail();
+    }
 }
