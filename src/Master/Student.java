@@ -40,11 +40,11 @@ public class Student extends Person implements Login{
         this.gender = gender;
     }
 
-    public void getIssuedBooks() {
-        if (issuedBooks.isEmpty()) {
-            System.out.println("List is empty");
-            return;
-        }
+    public ArrayList<Book> getIssuedBooks() {
+        return issuedBooks;
+    }
+
+    public void viewIssuedBooks() {
         for (int i = 0; i < issuedBooks.size(); i++) {
             System.out.println("-----Issued Book " + i+1 + "-----");
             System.out.println(issuedBooks.get(i));
@@ -81,6 +81,9 @@ public class Student extends Person implements Login{
                 System.out.println(books.get(i));
                 count++;
             }
+        }
+        if (count == 1) {
+            System.out.println("No Book Available!");
         }
     }
 

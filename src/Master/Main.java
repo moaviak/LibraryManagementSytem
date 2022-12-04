@@ -7,6 +7,9 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Book> books = new ArrayList<>();
 	    ArrayList<Admin> admins = new ArrayList<>();
+        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<Supplier> suppliers = new ArrayList<>();
+        ArrayList<Expenses> expenses = new ArrayList<>();
 
         System.out.println("-------------------------------------");
         System.out.println("Welcome To Library Management System");
@@ -28,11 +31,8 @@ public class Main {
 
             switch (ch) {
                 case 1:
-                    ArrayList<Supplier> suppliers = new ArrayList<>();
-                    ArrayList<Expenses> expenses = new ArrayList<>();
-
                     System.out.println("\n----------Admin Portal----------");
-                    System.out.print("1. To Login\n" +
+                    System.out.print("1. To Log-in\n" +
                             "2. To Sign-up\n" +
                             "Enter: ");
                     ch = Integer.parseInt(sc.nextLine());
@@ -328,7 +328,7 @@ public class Main {
                                                         System.out.println(logedAdmin);
                                                         break;
                                                     default:
-                                                        System.out.println("\nInvlaid Choice");
+                                                        System.out.println("\nInvalid Choice");
                                                         break;
                                                 }
                                             } while (true);
@@ -336,10 +336,199 @@ public class Main {
                                     }
                                 } while (true);
                             }
+                            break;
+                        default:
+                            System.out.println("\nInvalid Choice");
                     }
                     break;
                 case 2:
-                    // Student Portal TBW
+                    System.out.println("\n----------Student Portal----------");
+                    System.out.print("1. To Log-in\n" +
+                            "2. To Sign-up\n" +
+                            "Enter: ");
+                    ch = Integer.parseInt(sc.nextLine());
+
+                    boolean logged = false;
+                    Student loggedStudent = null;
+                    switch (ch) {
+                        case 1:
+                            if (students.isEmpty()) {
+                                System.out.println("\nFirst Register Yourself!");
+                                break;
+                            }
+                            System.out.println("\n----------Student LogIn----------");
+                            do {
+                                System.out.print("\nEnter Reg. No: ");
+                                String regNo = sc.nextLine().toUpperCase();
+                                System.out.print("Enter Password: ");
+                                String password = sc.nextLine();
+                                for (Student student : students) {
+                                    if (student.verifyLogin(regNo, password)) {
+                                        logged = true;
+                                        loggedStudent = student;
+                                        break;
+                                    }
+                                }
+                                if (!logged) {
+                                    System.out.println("Invalid Email or Password!");
+                                    System.out.println("Press 1 to Try Again or Press 0 to Exit");
+                                    if (Integer.parseInt(sc.nextLine()) != 1)
+                                        break;
+                                } else
+                                    break;
+                            } while (true);
+                        case 2:
+                            if (!logged) {
+                                System.out.println("\n----------Student SignUp----------");
+                                signUpStudent(students);
+                                logged = true;
+                                loggedStudent = students.get(students.size() - 1);
+                                System.out.println("\nStudent Account Successfully Created");
+                            }
+                            if (logged) {
+                                do {
+                                    System.out.println("\n----------Student Portal----------");
+                                    System.out.print("1. Issue Book\n" +
+                                            "2. Return Book\n" +
+                                            "3. View Available Books\n" +
+                                            "4. View Your Issue List\n" +
+                                            "5. Your Profile\n" +
+                                            "0. Log-out\n" +
+                                            "Enter: ");
+                                    ch = Integer.parseInt(sc.nextLine());
+
+                                    if (ch == 0) break;
+
+                                    switch (ch) {
+                                        case 1:
+                                            if (books.isEmpty()) {
+                                                System.out.print("\nNo Book Added Yet!");
+                                                break;
+                                            }
+                                            System.out.println("\nAll Available Books");
+                                            loggedStudent.viewBooks(books);
+
+                                            System.out.print("\nEnter Book Id or Name: ");
+                                            String bookSearch = sc.nextLine();
+                                            Book book = findBook(books, bookSearch);
+                                            if (book != null) {
+                                                System.out.println("\n" + book);
+                                                System.out.println("Enter 1 to Issue or 0 to cancel");
+                                                if (Integer.parseInt(sc.nextLine()) == 1) {
+                                                    loggedStudent.issueBook(book);
+                                                    System.out.println("Book Successfully Issued to you");
+                                                }
+                                            } else {
+                                                System.out.println("\nNo Book Found");
+                                            }
+                                            break;
+                                        case 2:
+                                            if (loggedStudent.getIssuedBooks().isEmpty()) {
+                                                System.out.println("\nNo Book Issued to you");
+                                                break;
+                                            }
+                                            System.out.println();
+                                            loggedStudent.viewIssuedBooks();
+                                            System.out.print("\nEnter Book Id or Name: ");
+                                            bookSearch = sc.nextLine();
+                                            book = findBook(loggedStudent.getIssuedBooks(), bookSearch);
+                                            if (book != null) {
+                                                System.out.println("\n" + book);
+                                                System.out.println("Enter 1 to Return or 0 to cancel");
+                                                if (Integer.parseInt(sc.nextLine()) == 1) {
+                                                    loggedStudent.returnBook(book);
+                                                    System.out.println("Book Successfully Returned");
+                                                }
+                                            } else {
+                                                System.out.println("\nNo Book Found");
+                                            }
+                                            break;
+                                        case 3:
+                                            if (books.isEmpty()) {
+                                                System.out.print("\nNo Book Added Yet!");
+                                                break;
+                                            }
+                                            System.out.println("\nAll Available Books");
+                                            loggedStudent.viewBooks(books);
+                                            break;
+                                        case 4:
+                                            if (loggedStudent.getIssuedBooks().isEmpty()) {
+                                                System.out.println("\nNo Book Issued to you");
+                                                break;
+                                            }
+                                            System.out.println("\nAll Books Issued To you");
+                                            loggedStudent.viewIssuedBooks();
+                                            break;
+                                        case 5:
+                                            do {
+                                                System.out.println("\n----------Your Profile----------");
+                                                System.out.print("1. To Change Your Profile\n" +
+                                                        "2. To View Your Profile\n" +
+                                                        "0. To Exit\n" +
+                                                        "Enter: ");
+                                                ch = Integer.parseInt(sc.nextLine());
+
+                                                if (ch == 0) break;
+
+                                                switch (ch) {
+                                                    case 1:
+                                                        do {
+                                                            System.out.print("\n1. Change Name\n" +
+                                                                    "2. Change Age\n" +
+                                                                    "3. Change Gender\n" +
+                                                                    "4. Change Password\n" +
+                                                                    "0. Exit\n" +
+                                                                    "Enter: ");
+                                                            ch = Integer.parseInt(sc.nextLine());
+
+                                                            if (ch == 0) break;
+
+                                                            switch (ch) {
+                                                                case 1:
+                                                                    System.out.print("\nEnter New Name: ");
+                                                                    String name = sc.nextLine();
+                                                                    loggedStudent.setName(name);
+                                                                    break;
+                                                                case 2:
+                                                                    System.out.print("\nEnter New Age: ");
+                                                                    int age = Integer.parseInt(sc.nextLine());
+                                                                    loggedStudent.setAge(age);
+                                                                    break;
+                                                                case 3:
+                                                                    System.out.print("\nEnter New Gender: ");
+                                                                    String gender = sc.nextLine();
+                                                                    loggedStudent.setGender(gender);
+                                                                    break;
+                                                                case 4:
+                                                                    System.out.print("\nEnter New Password: ");
+                                                                    String password = sc.nextLine();
+                                                                    loggedStudent.setPassword(password);
+                                                                    break;
+                                                                default:
+                                                                    System.out.println("\nInvalid Choice");
+                                                            }
+                                                        } while (true);
+                                                        break;
+                                                    case 2:
+                                                        System.out.println("Reg. No: " + loggedStudent.getRegNo() +
+                                                                "\nName: " + loggedStudent.getName() +
+                                                                "\nAge: " + loggedStudent.getAge() +
+                                                                "\nGender: " + loggedStudent.getGender());
+                                                        break;
+                                                    default:
+                                                        System.out.println("\nInvalid Choice");
+                                                        break;
+                                                }
+                                            } while (true);
+                                            break;
+                                    }
+                                } while (true);
+                            }
+                            break;
+                        default:
+                            System.out.println("\nInvalid Choice");
+                    }
+                    break;
                 case 0:
                     exit = true;
                     break;
@@ -348,6 +537,21 @@ public class Main {
             }
 
         } while (!exit);
+    }
+
+    private static void signUpStudent(ArrayList<Student> students) {
+        System.out.print("Enter Registration Number: ");
+        String regNo = sc.nextLine();
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Age: ");
+        int age = Integer.parseInt(sc.nextLine());
+        System.out.print("Enter Gender: ");
+        String gender = sc.nextLine();
+        System.out.print("Enter Password: ");
+        String password = sc.nextLine();
+
+        students.add(new Student(name, age, regNo, password, gender));
     }
 
     private static Expenses findExpenses(ArrayList<Expenses> expenses, String month) {
