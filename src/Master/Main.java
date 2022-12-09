@@ -11,6 +11,15 @@ public class Main {
         ArrayList<Supplier> suppliers = new ArrayList<>();
         ArrayList<Expenses> expenses = new ArrayList<>();
 
+        int[] bookIds = {101, 102, 103, 104, 105};
+        String[] bookNames = {"Think and Grow Rich", "Go For It", "Alchemist", "War and Peace", "Rich Dad Poor Dad"};
+        String[] bookAuthors = {"Napoleon Hill", "Kamran Rizvi", "Paulo Coelho", "Leo Tolstoy", "Robert Kiyoski"};
+        Supplier initial = new Supplier("001", "Faizan", 19, "Gohar Publishers", "03123456789");
+
+        for (int i=0; i< bookIds.length; i++) {
+            books.add(new Book(bookIds[i], bookNames[i], bookAuthors[i], initial));
+        }
+
         System.out.println("-------------------------------------");
         System.out.println("Welcome To Library Management System");
         System.out.println("-------------------------------------");
