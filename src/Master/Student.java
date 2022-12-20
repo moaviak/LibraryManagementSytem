@@ -24,7 +24,7 @@ public class Student extends Person implements Login{
         this.regNo = regNo;
     }
 
-    public String getPassword() {
+    private String getPassword() {
         return password;
     }
 

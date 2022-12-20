@@ -6,27 +6,34 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        ArrayList<Book> books = new ArrayList<>();
         ArrayList<Student> students = new ArrayList<>();
         ArrayList<Supplier> suppliers = new ArrayList<>();
         ArrayList<Expenses> expenses = new ArrayList<>();
 
-        int[] bookIds = {101, 102, 103, 104, 105};
-        String[] bookNames = {"Think and Grow Rich", "Go For It", "Alchemist", "War and Peace", "Rich Dad Poor Dad"};
-        String[] bookAuthors = {"Napoleon Hill", "Kamran Rizvi", "Paulo Coelho", "Leo Tolstoy", "Robert Kiyoski"};
-        Supplier initial = new Supplier("001", "Faizan", 19, "Gohar Publishers", "03123456789");
+        ArrayList<Book> books = new ArrayList<>();
 
-        for (int i = 0; i < bookIds.length; i++) {
-            books.add(new Book(bookIds[i], bookNames[i], bookAuthors[i], initial));
-        }
+        suppliers.add(new Supplier("001", "Faizan", 19, "Gohar Publishers", "03123456789"));
+        suppliers.add(new Supplier("102", "Raja Wail", 22, "Insider's Gate", "0369696969"));
+
+        books.add(new Book(101, "Think and Grow Rich", "Napoleon Hill", suppliers.get(0)));
+        books.add(new Book(102, "Go For It", "Kamran Rizvi", suppliers.get(0)));
+        books.add(new Book(103, "Alchemist", "Paulo Coelho", suppliers.get(1)));
+        books.add(new Book(104, "War and Peace", "Leo Tolstoy", suppliers.get(0)));
+        books.add(new Book(105,"Rich Dad Poor Dad", "Robert Kiyoski", suppliers.get(1)));
+
+        students.add(new Student("Tanveer Ahmed", 21, "SP22-BCS-015", "12345", "Male"));
+        students.add(new Student("M. Khuzaifa Awan", 21, "SP22-BCS-020", "12345", "Male"));
+        students.add(new Student("Muhammad Awais", 20, "SP22-BCS-033", "12345", "Male"));
+
+        Admin admin = new Admin("Muhammad Moavia", 20, "admin@admin.com", "root");
+
+        expenses.add(new Expenses("January", 50000, 35000, 45000));
+        expenses.add(new Expenses("Feburay", 65000, 10000, 45000));
+        expenses.add(new Expenses("March", 40000, 20000, 40000));
 
         System.out.println("-------------------------------------");
         System.out.println("Welcome To Library Management System");
         System.out.println("-------------------------------------");
-
-        System.out.println("\nInitialize Admin Account");
-        Admin admin = signUpAdmin();
-        System.out.println("\nAdmin Account Successfully Created");
 
         boolean exit = false;
         do {
@@ -85,10 +92,6 @@ public class Main {
 
                                         switch (ch) {
                                             case 1:
-                                                if (suppliers.isEmpty()) {
-                                                    System.out.println("First Add Supplier");
-                                                    break;
-                                                }
                                                 System.out.print("\nEnter Book Id: ");
                                                 int bookId = Integer.parseInt(sc.nextLine());
                                                 System.out.print("Enter Book Name: ");
@@ -566,15 +569,4 @@ public class Main {
         return null;
     }
 
-    private static Admin signUpAdmin() {
-        System.out.print("Enter Name: ");
-        String adminName = sc.nextLine();
-        System.out.print("Enter Age: ");
-        int adminAge = Integer.parseInt(sc.nextLine());
-        System.out.print("Enter Email: ");
-        String adminEmail = sc.nextLine();
-        System.out.print("Enter Password: ");
-        String adminPassword = sc.nextLine();
-        return new Admin(adminName, adminAge, adminEmail, adminPassword);
-    }
 }

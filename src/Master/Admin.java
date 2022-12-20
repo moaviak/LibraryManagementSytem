@@ -6,12 +6,6 @@ public class Admin extends Person implements Login{
     private String email;
     private String password;
 
-    public Admin() {
-        super("Admin", 0);
-        email = "root";
-        password = "root";
-    }
-
     public Admin(String name, int age, String email, String password) {
         super(name, age);
         setEmail(email);
@@ -26,7 +20,7 @@ public class Admin extends Person implements Login{
         this.email = email;
     }
 
-    public String getPassword() {
+    private String getPassword() {
         return password;
     }
 
